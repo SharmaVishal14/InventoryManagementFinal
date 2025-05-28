@@ -1,0 +1,161 @@
+package com.cts.inventorymanagement.product.service.impl;
+
+import com.cts.inventorymanagement.product.client.StockClient;
+import com.cts.inventorymanagement.product.dto.ProductDto;
+import com.cts.inventorymanagement.product.dto.StockDto;
+import com.cts.inventorymanagement.product.dto.StockUpdateRequest;
+import com.cts.inventorymanagement.product.exception.ProductNotFoundException;
+import com.cts.inventorymanagement.product.model.Product;
+import com.cts.inventorymanagement.product.model.Product.ProductStatus;
+import com.cts.inventorymanagement.product.repository.ProductRepository;
+import com.cts.inventorymanagement.product.service.ProductService;
+import feign.FeignException;
+import jakarta.transaction.Transactional;
+import org.springframework.beans.BeanUtils;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.stereotype.Service;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+@Transactional
+public class ProductServiceImpl implements ProductService {
+
+    private final ProductRepository productRepository;
+    private final StockClient stockClient;
+    private static final int DEFAULT_REORDER_LEVEL = 10;
+
+    public ProductServiceImpl(ProductRepository productRepository, StockClient stockClient) {
+        this.productRepository = productRepository;
+        this.stockClient = stockClient;
+    }
+
+    @Override
+    public ProductDto createProduct(ProductDto productDto) {
+        Product product = new Product();
+        BeanUtils.copyProperties(productDto, product);
+        product.setStatus(ProductStatus.ACTIVE);
+        
+        Product savedProduct = productRepository.save(product);
+        createInitialStockEntry(savedProduct.getProductId());
+        
+        return convertToDto(savedProduct);
+    }
+
+    private void createInitialStockEntry(Long productId) {
+        try {
+            StockDto stockDto = new StockDto();
+            stockDto.setProductId(productId);
+            stockDto.setQuantity(0);
+            stockDto.setReorderLevel(DEFAULT_REORDER_LEVEL);
+            stockClient.addStock(stockDto);
+        } catch (FeignException e) {
+            throw new IllegalStateException("Failed to create stock entry for product: " + productId + e.toString(), e);
+        }
+    }
+
+    @Override
+    public ProductDto getProductById(Long id) {
+        return productRepository.findById(id)
+                .filter(p -> p.getStatus() != ProductStatus.DELETED)
+                .map(this::convertToDto)
+                .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + id));
+    }
+
+    @Override
+    public List<ProductDto> getAllProducts() {
+        return productRepository.findByStatusNot(ProductStatus.DELETED)
+                .stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public ProductDto updateProduct(Long id, ProductDto productDto) {
+        return productRepository.findById(id)
+                .filter(p -> p.getStatus() != ProductStatus.DELETED)
+                .map(existingProduct -> {
+                    BeanUtils.copyProperties(productDto, existingProduct);
+                    existingProduct.setProductId(id); // Prevent ID change
+                    return convertToDto(productRepository.save(existingProduct));
+                })
+                .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + id));
+    }
+
+    @Override
+    public void deleteProduct(Long id) {
+        productRepository.findById(id)
+                .ifPresentOrElse(
+                        product -> {
+                            product.setStatus(ProductStatus.DELETED);
+                            productRepository.save(product);
+                        },
+                        () -> {
+                            throw new ProductNotFoundException("Product not found with id: " + id);
+                        }
+                );
+    }
+
+    @Override
+    public List<ProductDto> searchProductsByName(String name) {
+        return productRepository.findByNameContainingIgnoreCaseAndStatusNot(name, ProductStatus.DELETED)
+                .stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ProductDto> getLowStockProducts() {
+        try {
+            return stockClient.getLowStockItems().stream()
+                    .map(stock -> getProductById(stock.getProductId()))
+                    .collect(Collectors.toList());
+        } catch (FeignException e) {
+            return Collections.emptyList();
+        }
+    }
+
+    @Override
+    public StockDto updateStockLevel(Long productId, int quantity) {
+        validateProductExists(productId);
+        
+        StockUpdateRequest.Operation operation = quantity > 0 
+                ? StockUpdateRequest.Operation.INCREMENT 
+                : StockUpdateRequest.Operation.DECREMENT;
+        
+        StockUpdateRequest request = new StockUpdateRequest(
+                Math.abs(quantity),
+                operation
+        );
+        
+        try {
+            return stockClient.updateStock(productId, request);
+        } catch (FeignException e) {
+            throw new IllegalStateException("Stock update failed for product: " + productId, e);
+        }
+    }
+
+    @Override
+    public StockDto getStock(Long productId) {
+        validateProductExists(productId);
+        try {
+            return stockClient.getStock(productId);
+        } catch (FeignException e) {
+            throw new IllegalStateException("Failed to retrieve stock for product: " + productId, e);
+        }
+    }
+
+    private void validateProductExists(Long productId) {
+        if (!productRepository.existsByProductIdAndStatusNot(productId, ProductStatus.DELETED)) {
+            throw new ProductNotFoundException("Product not found with id: " + productId);
+        }
+    }
+
+    private ProductDto convertToDto(Product product) {
+        ProductDto dto = new ProductDto();
+        BeanUtils.copyProperties(product, dto);
+        return dto;
+    }
+}

@@ -1,0 +1,156 @@
+package com.cts.inventorymanagement.order.service.impl;
+
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
+
+import com.cts.inventorymanagement.order.client.ProductClient;
+import com.cts.inventorymanagement.order.client.StockClient;
+import com.cts.inventorymanagement.order.exceptions.InsufficientStockException;
+import com.cts.inventorymanagement.order.exceptions.ProductNotFoundException;
+import com.cts.inventorymanagement.order.model.Order;
+import com.cts.inventorymanagement.order.model.OrderDto;
+import com.cts.inventorymanagement.order.model.OrderItem;
+import com.cts.inventorymanagement.order.model.OrderItemDto;
+import com.cts.inventorymanagement.order.model.StockDto;
+import com.cts.inventorymanagement.order.model.StockUpdateRequest;
+import com.cts.inventorymanagement.order.model.StockUpdateRequest.Operation;
+import com.cts.inventorymanagement.order.repository.OrderRepository;
+import com.cts.inventorymanagement.order.service.OrderService;
+
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class OrderServiceImpl implements OrderService {
+
+    private static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
+    private final OrderRepository orderRepo;
+    private final ProductClient productClient;
+    private final StockClient stockClient;
+
+    @Override
+    @Transactional
+    public OrderDto createOrder(OrderDto orderDto) {
+        logger.info("Creating order for customer: {}", orderDto.getCustomerId());
+        for (OrderItemDto item : orderDto.getItems()) {
+            logger.debug("Checking product existence and stock for product ID: {}", item.getProductId());
+            try {
+                productClient.getProductById(item.getProductId());
+                StockDto stock = stockClient.getStock(item.getProductId());
+                if (stock.getQuantity() < item.getQuantity()) {
+                    logger.warn("Insufficient stock for product ID: {}. Available: {}, Requested: {}",
+                                item.getProductId(), stock.getQuantity(), item.getQuantity());
+                    throw new InsufficientStockException(
+                            "Insufficient stock for product: " + item.getProductId() +
+                            ". Available: " + stock.getQuantity());
+                }
+            } catch (Exception e) {
+                logger.error("Error while checking product ID: {}. Error: {}", item.getProductId(), e.getMessage());
+                throw new ProductNotFoundException("Product not found with id: " + item.getProductId() + e.getMessage());
+            }
+        }
+
+        Order order = new Order();
+        BeanUtils.copyProperties(orderDto, order, "items");
+
+        List<OrderItem> orderItems = orderDto.getItems().stream()
+                .map(itemDto -> {
+                    OrderItem item = new OrderItem();
+                    BeanUtils.copyProperties(itemDto, item);
+                    item.setOrder(order);
+
+                    logger.debug("Decrementing stock for product ID: {}, quantity: {}", item.getProductId(), item.getQuantity());
+                    StockUpdateRequest stockRequest = new StockUpdateRequest();
+                    stockRequest.setQuantity(item.getQuantity());
+                    stockRequest.setOperation(Operation.DECREMENT);
+                    stockClient.updateStock(item.getProductId(), stockRequest);
+
+                    return item;
+                }).collect(Collectors.toList());
+
+        order.setItems(orderItems);
+        order.setOrderStatus(Order.Status.PENDING);
+        order.setOrderdate(LocalDateTime.now());
+
+        logger.debug("Saving order: {}", order);
+        orderRepo.save(order);
+        logger.info("Order created with ID: {}", order.getOrderId());
+        return convertToDto(order);
+    }
+
+    @Override
+    public List<OrderDto> getAllOrders() {
+        logger.info("Fetching all orders.");
+        List<Order> orders = orderRepo.findAll();
+        logger.debug("Retrieved {} orders.", orders.size());
+        return orders.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<OrderDto> getOrdersOfCustomer(Long customerId) {
+        logger.info("Fetching orders for customer ID: {}", customerId);
+        List<Order> orders = orderRepo.findByCustomerId(customerId);
+        logger.debug("Retrieved {} orders for customer ID: {}", orders.size(), customerId);
+        return orders.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<OrderDto> getOrdersOfProduct(Long productId) {
+        logger.info("Fetching orders for product ID: {}", productId);
+        List<Order> orders = orderRepo.findByProductId(productId);
+        logger.debug("Retrieved {} orders for product ID: {}", orders.size(), productId);
+        return orders.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+
+    @Override
+    public Map<String, String> updateOrderStatus(Long orderId, Order.Status orderStatus) {
+        logger.info("Updating order status for order ID: {} to: {}", orderId, orderStatus);
+        Order order = orderRepo.findById(orderId)
+                .orElseThrow(() -> {
+                    logger.warn("Order not found with ID: {}", orderId);
+                    return new RuntimeException("Order does not exist!");
+                });
+        order.setOrderStatus(orderStatus);
+        logger.debug("Order status updated. Saving order: {}", order);
+        orderRepo.save(order);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("status", orderStatus.toString());
+        logger.info("Order ID {} status updated to: {}", orderId, orderStatus);
+        return response;
+    }
+
+
+    private OrderDto convertToDto(Order order) {
+        OrderDto orderDto = new OrderDto();
+        BeanUtils.copyProperties(order, orderDto, "items");
+
+        if (order.getItems() != null) {
+            List<OrderItemDto> itemDtos = order.getItems().stream()
+                    .map(item -> {
+                        OrderItemDto itemDto = new OrderItemDto();
+                        BeanUtils.copyProperties(item, itemDto);
+                        return itemDto;
+                    }).collect(Collectors.toList());
+            orderDto.setItems(itemDtos);
+        }
+        logger.debug("Converted Order to OrderDto. Order ID: {}", order.getOrderId());
+        return orderDto;
+    }
+}

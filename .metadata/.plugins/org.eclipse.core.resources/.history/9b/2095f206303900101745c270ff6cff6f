@@ -1,0 +1,100 @@
+package com.cts.inventorymanagement.stock.controller;
+
+import com.cts.inventorymanagement.stock.dto.StockDto;
+import com.cts.inventorymanagement.stock.dto.StockUpdateRequest;
+import com.cts.inventorymanagement.stock.service.StockService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+import org.slf4j.Logger; // Import for Logger
+import org.slf4j.LoggerFactory; // Import for LoggerFactory
+
+@RestController
+@RequestMapping("/stock") // Added a more specific base path for clarity
+public class StockController {
+
+    // Initialize the logger for this class
+    private static final Logger log = LoggerFactory.getLogger(StockController.class);
+
+    private final StockService stockService;
+
+    public StockController(StockService stockService) {
+        this.stockService = stockService;
+    }
+
+    @GetMapping("/{productId}")
+    public StockDto getStock(@PathVariable Long productId) {
+        // Log the incoming request to get stock for a specific product
+        log.info("Received request to get stock for product ID: {}", productId);
+        try {
+            StockDto stock = stockService.getStock(productId);
+            // Log the retrieved stock quantity or warn if not found
+            if (stock != null) {
+                log.debug("Successfully retrieved stock for product ID {}: Quantity = {}", productId, stock.getQuantity());
+            } else {
+                log.warn("Stock information for product ID {} not found.", productId);
+            }
+            return stock;
+        } catch (Exception e) {
+            // Log any errors during stock retrieval
+            log.error("Error fetching stock for product ID {}: {}", productId, e.getMessage(), e);
+            throw e; // Re-throwing the exception to be handled by a global exception handler if present
+        }
+    }
+
+    @PutMapping("/{productId}")
+    public StockDto updateStock(
+            @PathVariable Long productId,
+            @Valid @RequestBody StockUpdateRequest request) {
+        // Log the incoming request to update stock
+        log.info("Received request to update stock for product ID {}. Operation: {}, Amount: {}",
+                productId, request.getOperation(), request.getAmount());
+        try {
+            StockDto updatedStock = stockService.updateStock(productId, request);
+            // Log successful stock update
+            log.debug("Stock for product ID {} updated successfully. New quantity: {}", productId, updatedStock.getQuantity());
+            return updatedStock;
+        } catch (Exception e) {
+            // Log any errors during stock update
+            log.error("Error updating stock for product ID {}. Operation: {}, Amount: {}. Error: {}",
+                    productId, request.getOperation(), e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public StockDto addStock(@Valid @RequestBody StockDto stockDto) {
+        // Log the incoming request to add new stock
+        log.info("Received request to add initial stock for product ID: {} with quantity: {}",
+                stockDto.getProductId(), stockDto.getQuantity());
+        try {
+            StockDto newStock = stockService.addStock(stockDto);
+            // Log successful addition
+            log.debug("Initial stock added successfully for product ID {}. Current quantity: {}",
+                    newStock.getProductId(), newStock.getQuantity());
+            return newStock;
+        } catch (Exception e) {
+            // Log any errors during stock addition
+            log.error("Error adding initial stock for product ID {}: {}", stockDto.getProductId(), e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @GetMapping("/low")
+    public List<StockDto> getLowStockItems() {
+        // Log the incoming request for low stock items
+        log.info("Received request to get all low stock items.");
+        try {
+            List<StockDto> lowStockItems = stockService.getLowStockItems();
+            // Log the number of low stock items found
+            log.debug("Successfully retrieved {} low stock items.", lowStockItems.size());
+            return lowStockItems;
+        } catch (Exception e) {
+            // Log any errors during retrieval of low stock items
+            log.error("Error fetching low stock items: {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+}

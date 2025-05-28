@@ -1,0 +1,74 @@
+package com.cts.inventorymanagement.order.controller;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.cts.inventorymanagement.order.model.Order;
+import com.cts.inventorymanagement.order.model.OrderDto;
+import com.cts.inventorymanagement.order.service.OrderService;
+
+import jakarta.validation.Valid;
+
+@RestController
+public class OrderController {
+
+    private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
+    private final OrderService service;
+
+    public OrderController(OrderService service) {
+        this.service = service;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<OrderDto>> getAllOrders(@RequestParam(required = false) Long customerId) {
+        logger.info("GET /api/orders - customerId: {}", customerId);
+        List<OrderDto> orders = new ArrayList<>();
+        if (customerId == null) {
+            logger.debug("Fetching all orders.");
+            orders = service.getAllOrders();
+        } else {
+            logger.debug("Fetching orders for customerId: {}", customerId);
+            orders = service.getOrdersOfCustomer(customerId);
+        }
+        logger.info("Returning {} orders.", orders.size());
+        return ResponseEntity.ok(orders);
+    }
+
+    @GetMapping("/{productId}")
+    public ResponseEntity<List<OrderDto>> getOrdersOfProduct(@PathVariable Long productId) {
+        logger.info("GET /api/orders/{}", productId);
+        logger.debug("Fetching orders for productId: {}", productId);
+        List<OrderDto> orders = service.getOrdersOfProduct(productId);
+        logger.info("Returning {} orders.", orders.size());
+        return ResponseEntity.ok(orders);
+    }
+
+    @PostMapping
+    public ResponseEntity<OrderDto> createOrder(@Valid @RequestBody OrderDto orderDto) {
+        logger.info("POST /api/orders - body: {}", orderDto);
+        OrderDto createdOrder = service.createOrder(orderDto);
+        logger.info("Order created with ID: {}", createdOrder.getOrderId()); // Assuming OrderDto has getOrderId
+        return new ResponseEntity<>(createdOrder, HttpStatus.CREATED);
+    }
+
+    @PatchMapping("/{orderId}")
+    public ResponseEntity<Map<String, String>> updateOrderStatus(@PathVariable Long orderId, @RequestParam String orderStatus) {
+        logger.info("PATCH /api/orders/{} - orderStatus: {}", orderId, orderStatus);
+        Map<String, String> result = service.updateOrderStatus(orderId, Order.Status.valueOf(orderStatus));
+        logger.info("Order ID {} status updated to: {}. Result: {}", orderId, orderStatus, result);
+        return ResponseEntity.ok(result);
+    }
+}

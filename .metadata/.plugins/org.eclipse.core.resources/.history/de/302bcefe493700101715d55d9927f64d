@@ -1,0 +1,5 @@
+package com.cts.inventorymanagement.gateway.logger;
+
+public class LoggingFilter {
+
+}

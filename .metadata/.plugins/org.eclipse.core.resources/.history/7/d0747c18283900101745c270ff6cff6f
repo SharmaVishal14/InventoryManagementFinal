@@ -1,0 +1,198 @@
+package com.cts.inventorymanagement.product.controller;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.cts.inventorymanagement.product.dto.ProductDto;
+import com.cts.inventorymanagement.product.dto.StockDto;
+import com.cts.inventorymanagement.product.service.ProductService;
+
+import jakarta.validation.Valid;
+import org.slf4j.Logger; // Import for Logger
+import org.slf4j.LoggerFactory; // Import for LoggerFactory
+
+@RestController
+@RequestMapping
+public class ProductServiceController {
+
+    // Initialize the logger for this class
+    private static final Logger log = LoggerFactory.getLogger(ProductServiceController.class);
+
+    private final ProductService productService;
+
+    public ProductServiceController(ProductService productService) {
+        this.productService = productService;
+    }
+
+    @PostMapping
+    public ResponseEntity<ProductDto> createProduct(@Valid @RequestBody ProductDto productDto) {
+        // Log the incoming request to create a product
+        log.info("Received request to create product: {}", productDto.getName());
+        try {
+            ProductDto createdProduct = productService.createProduct(productDto);
+            // Log successful creation
+            log.debug("Product created successfully with ID: {}", createdProduct.getId());
+            return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
+        } catch (Exception e) {
+            // Log any errors during product creation
+            log.error("Error creating product {}: {}", productDto.getName(), e.getMessage(), e);
+            throw e; // Re-throwing the exception to be handled by a global exception handler if present
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductDto> getProductById(@PathVariable Long id) {
+        // Log the request for a specific product ID
+        log.info("Received request to get product by ID: {}", id);
+        try {
+            ProductDto product = productService.getProductById(id);
+            // Log if product is found or not
+            if (product != null) {
+                log.debug("Successfully retrieved product with ID {}: {}", id, product.getName());
+            } else {
+                log.warn("Product with ID {} not found.", id);
+            }
+            return ResponseEntity.ok(product);
+        } catch (Exception e) {
+            // Log errors during retrieval
+            log.error("Error fetching product with ID {}: {}", id, e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ProductDto>> getAllProducts() {
+        // Log the request to get all products
+        log.info("Received request to get all products.");
+        try {
+            List<ProductDto> products = productService.getAllProducts();
+            // Log the count of retrieved products
+            log.debug("Successfully retrieved {} products.", products.size());
+            return ResponseEntity.ok(products);
+        } catch (Exception e) {
+            // Log errors during retrieval of all products
+            log.error("Error fetching all products: {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductDto> updateProduct(
+            @PathVariable Long id, @Valid @RequestBody ProductDto productDto) {
+        // Log the update request
+        log.info("Received request to update product with ID {}. New data: {}", id, productDto.getName());
+        try {
+            ProductDto updatedProduct = productService.updateProduct(id, productDto);
+            // Log successful update
+            log.debug("Product with ID {} updated successfully. Updated product: {}", id, updatedProduct.getName());
+            return ResponseEntity.ok(updatedProduct);
+        } catch (Exception e) {
+            // Log errors during update
+            log.error("Error updating product with ID {}: {}", id, e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+        // Log the delete request
+        log.info("Received request to delete product with ID: {}", id);
+        try {
+            productService.deleteProduct(id);
+            // Log successful deletion
+            log.debug("Product with ID {} deleted successfully.", id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            // Log errors during deletion
+            log.error("Error deleting product with ID {}: {}", id, e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<ProductDto>> searchProducts(@RequestParam String name) {
+        // Log the search request
+        log.info("Received request to search products by name: {}", name);
+        try {
+            List<ProductDto> products = productService.searchProductsByName(name);
+            // Log the number of search results
+            log.debug("Found {} products matching name '{}'.", products.size(), name);
+            return ResponseEntity.ok(products);
+        } catch (Exception e) {
+            // Log errors during search
+            log.error("Error searching products by name '{}': {}", name, e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @GetMapping("/low-stock")
+    public ResponseEntity<List<ProductDto>> getLowStockProducts() {
+        // Log the request for low stock products
+        log.info("Received request to get low stock products.");
+        try {
+            List<ProductDto> lowStockProducts = productService.getLowStockProducts();
+            // Log the count of low stock products
+            log.debug("Retrieved {} low stock products.", lowStockProducts.size());
+            return ResponseEntity.ok(lowStockProducts);
+        } catch (Exception e) {
+            // Log errors during retrieval of low stock products
+            log.error("Error fetching low stock products: {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @GetMapping("/{productId}/stock")
+    public ResponseEntity<StockDto> getStock(@PathVariable Long productId) {
+        // Log the request to get stock for a product
+        log.info("Received request to get stock for product ID: {}", productId);
+        try {
+            StockDto stock = productService.getStock(productId);
+            // Log retrieved stock details
+            log.debug("Retrieved stock for product ID {}: Quantity = {}", productId, stock != null ? stock.getQuantity() : "null");
+            return ResponseEntity.ok(stock);
+        } catch (Exception e) {
+            // Log errors during stock retrieval
+            log.error("Error fetching stock for product ID {}: {}", productId, e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @PutMapping("/{id}/stock")
+    public ResponseEntity<StockDto> updateStockLevel(
+            @PathVariable Long id, @RequestBody Map<String, Integer> request) {
+        // Log the request to update stock level
+        log.info("Received request to update stock for product ID {}.", id);
+        Integer quantity = request.get("quantity");
+        try {
+            if (quantity == null || quantity == 0) {
+                log.warn("Attempted to update stock for product ID {} with invalid quantity: {}", id, quantity);
+                throw new IllegalArgumentException("Quantity must be provided and non-zero");
+            }
+            StockDto updatedStock = productService.updateStockLevel(id, quantity);
+            // Log successful stock update
+            log.debug("Stock for product ID {} updated successfully. New quantity: {}", id, updatedStock.getQuantity());
+            return ResponseEntity.ok(updatedStock);
+        } catch (IllegalArgumentException e) {
+            // Log specific validation errors
+            log.error("Validation error updating stock for product ID {}: {}", id, e.getMessage());
+            throw e; // Re-throwing to allow Spring's default error handling or a custom handler to catch it
+        } catch (Exception e) {
+            // Log general errors during stock update
+            log.error("Error updating stock for product ID {}: {}", id, e.getMessage(), e);
+            throw e;
+        }
+    }
+}

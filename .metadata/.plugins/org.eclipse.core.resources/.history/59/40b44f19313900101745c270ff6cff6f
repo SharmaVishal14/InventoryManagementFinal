@@ -1,0 +1,159 @@
+package com.cts.inventorymanagement.stock.service.impl;
+
+import com.cts.inventorymanagement.stock.dto.StockDto;
+import com.cts.inventorymanagement.stock.dto.StockUpdateRequest;
+import com.cts.inventorymanagement.stock.exceptions.InsufficientStockException;
+import com.cts.inventorymanagement.stock.exceptions.StockNotFoundException;
+import com.cts.inventorymanagement.stock.model.Stock; // Assuming this is the JPA entity
+import com.cts.inventorymanagement.stock.repository.StockRepository;
+import com.cts.inventorymanagement.stock.service.StockService;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.slf4j.Logger; // Import for Logger
+import org.slf4j.LoggerFactory; // Import for LoggerFactory
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+@RequiredArgsConstructor
+public class StockServiceImpl implements StockService {
+
+    // Initialize the logger for this class
+    private static final Logger log = LoggerFactory.getLogger(StockServiceImpl.class);
+
+    private final StockRepository stockRepository;
+
+    @Override
+    public StockDto getStock(Long productId) {
+        log.info("Attempting to retrieve stock for product ID: {}", productId);
+        try {
+            Stock stock = stockRepository.findById(productId)
+                    .orElseThrow(() -> {
+                        log.warn("Stock not found for product ID: {}", productId);
+                        return new StockNotFoundException("Stock not found for product: " + productId);
+                    });
+            log.debug("Successfully retrieved stock for product ID {}: Quantity = {}", productId, stock.getQuantity());
+            return convertToDto(stock);
+        } catch (StockNotFoundException e) {
+            // Re-throw specific business exceptions after logging
+            throw e;
+        } catch (Exception e) {
+            log.error("Error retrieving stock for product ID {}: {}", productId, e.getMessage(), e);
+            throw e; // Re-throw other unexpected exceptions
+        }
+    }
+
+    @Override
+    @Transactional
+    public StockDto updateStock(Long productId, StockUpdateRequest request) {
+        log.info("Attempting to update stock for product ID {}. Operation: {}, Amount: {}",
+                productId, request.getOperation());
+        try {
+            Stock stock = stockRepository.findById(productId)
+                    .orElseThrow(() -> {
+                        log.warn("Stock not found for product ID {} during update.", productId);
+                        return new StockNotFoundException("Stock not found for product: " + productId);
+                    });
+
+            int currentQuantity = stock.getQuantity();
+            
+
+            switch (request.getOperation()) {
+                case INCREMENT -> {
+                    stock.setQuantity(currentQuantity);
+                    log.debug("Incrementing stock for product ID {} from {} to {}", productId, currentQuantity, stock.getQuantity());
+                }
+                case DECREMENT -> {
+                    int newQuantity = currentQuantity;
+                    if (newQuantity < 0) {
+                        log.warn("Insufficient stock for product ID {}. Current: {}, Requested Decrement: {}",
+                                productId, currentQuantity);
+                        throw new InsufficientStockException(
+                                "Insufficient stock for product: " + productId + ". Available: " + currentQuantity + ", Requested: " + requestedAmount);
+                    }
+                    stock.setQuantity(newQuantity);
+                    log.debug("Decrementing stock for product ID {} from {} to {}", productId, currentQuantity, stock.getQuantity());
+                }
+                default -> {
+                    log.warn("Unknown stock update operation: {} for product ID {}", request.getOperation(), productId);
+                    throw new IllegalArgumentException("Unknown stock operation: " + request.getOperation());
+                }
+            }
+
+            Stock updatedStock = stockRepository.save(stock);
+            log.info("Stock for product ID {} updated successfully. New quantity: {}", productId, updatedStock.getQuantity());
+            return convertToDto(updatedStock);
+        } catch (StockNotFoundException | InsufficientStockException | IllegalArgumentException e) {
+            // Re-throw specific business exceptions after logging
+            throw e;
+        } catch (Exception e) {
+            log.error("Error updating stock for product ID {}: {}", productId, e.getMessage(), e);
+            throw e; // Re-throw other unexpected exceptions
+        }
+    }
+
+    @Override
+    public StockDto addStock(StockDto stockDto) {
+        log.info("Attempting to add new initial stock for product ID: {} with quantity: {}",
+                stockDto.getProductId(), stockDto.getQuantity());
+        try {
+            // Check if stock for this product already exists to avoid duplicates or to update
+            if (stockRepository.existsById(stockDto.getProductId())) {
+                log.warn("Stock entry for product ID {} already exists. Consider using updateStock method instead.", stockDto.getProductId());
+                // You might choose to throw an exception here, or update the existing stock
+                // For now, mirroring original behavior which implicitly relies on save() for new entity
+            }
+
+            Stock stock = new Stock();
+            stock.setProductId(stockDto.getProductId());
+            stock.setQuantity(stockDto.getQuantity());
+            stock.setReorderLevel(stockDto.getReorderLevel());
+
+            Stock savedStock = stockRepository.save(stock);
+            log.info("Initial stock added successfully for product ID {}. Current quantity: {}",
+                    savedStock.getProductId(), savedStock.getQuantity());
+            return convertToDto(savedStock);
+        } catch (Exception e) {
+            log.error("Error adding stock for product ID {}: {}", stockDto.getProductId(), e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    @Override
+    public List<StockDto> getLowStockItems() {
+        log.info("Attempting to retrieve all low stock items.");
+        try {
+            List<StockDto> lowStockItems = stockRepository.findAll().stream()
+                    .filter(stock -> {
+                        boolean isLow = stock.getQuantity() < stock.getReorderLevel();
+                        if (isLow) {
+                            log.debug("Product ID {} is low stock (Qty: {}, Reorder: {}).",
+                                    stock.getProductId(), stock.getQuantity(), stock.getReorderLevel());
+                        } else {
+                            log.trace("Product ID {} has sufficient stock (Qty: {}, Reorder: {}).",
+                                    stock.getProductId(), stock.getQuantity(), stock.getReorderLevel());
+                        }
+                        return isLow;
+                    })
+                    .map(this::convertToDto)
+                    .collect(Collectors.toList());
+            log.info("Successfully retrieved {} low stock items.", lowStockItems.size());
+            return lowStockItems;
+        } catch (Exception e) {
+            log.error("Error retrieving low stock items: {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+    private StockDto convertToDto(Stock stock) {
+        // This is a conversion helper, TRACE level is usually appropriate if logging is desired
+        log.trace("Converting Stock entity with Product ID {} to StockDto.", stock.getProductId());
+        StockDto dto = new StockDto();
+        dto.setProductId(stock.getProductId());
+        dto.setQuantity(stock.getQuantity());
+        dto.setReorderLevel(stock.getReorderLevel());
+        dto.setLowStock(stock.getQuantity() < stock.getReorderLevel()); // Set low stock status here too
+        return dto;
+    }
+}

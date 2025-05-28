@@ -1,0 +1,214 @@
+2025-05-25 09:59:16.384 [restartedMain] INFO  c.c.i.order.OrderServiceApplication - Starting OrderServiceApplication using Java 21 with PID 4100 (C:\Users\2392789\OneDrive - Cognizant\Desktop\PPRROOJJEECCTT\order-service\target\classes started by 2392789 in C:\Users\2392789\OneDrive - Cognizant\Desktop\PPRROOJJEECCTT\order-service)
+2025-05-25 09:59:16.385 [restartedMain] DEBUG c.c.i.order.OrderServiceApplication - Running with Spring Boot v3.4.5, Spring v6.2.6
+2025-05-25 09:59:16.385 [restartedMain] INFO  c.c.i.order.OrderServiceApplication - No active profile set, falling back to 1 default profile: "default"
+2025-05-25 09:59:17.193 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-25 09:59:17.216 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 20 ms. Found 1 JPA repository interface.
+2025-05-25 09:59:17.346 [restartedMain] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=96b8c958-a9ca-3b3e-b88c-6fc3b79f7ff5
+2025-05-25 09:59:17.635 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 5001 (http)
+2025-05-25 09:59:17.638 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-5001"]
+2025-05-25 09:59:17.639 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-05-25 09:59:17.639 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.40]
+2025-05-25 09:59:17.725 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-05-25 09:59:17.725 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1333 ms
+2025-05-25 09:59:18.044 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-25 09:59:18.057 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-05-25 09:59:18.103 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-25 09:59:18.105 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Starting...
+2025-05-25 09:59:18.137 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-2 - Added connection com.mysql.cj.jdbc.ConnectionImpl@402d04ad
+2025-05-25 09:59:18.137 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Start completed.
+2025-05-25 09:59:18.140 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-05-25 09:59:18.141 [restartedMain] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-2)']
+	Database driver: undefined/unknown
+	Database version: 8.0.41
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-05-25 09:59:18.360 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-25 09:59:18.402 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-25 09:59:18.796 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-05-25 09:59:18.873 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-05-25 09:59:18.954 [restartedMain] INFO  o.s.c.o.FeignClientFactoryBean - For 'product-service' URL not provided. Will try picking an instance via load-balancing.
+2025-05-25 09:59:19.076 [restartedMain] INFO  o.s.c.o.FeignClientFactoryBean - For 'stock-service' URL not provided. Will try picking an instance via load-balancing.
+2025-05-25 09:59:20.144 [restartedMain] INFO  o.s.c.n.e.c.DiscoveryClientOptionalArgsConfiguration - Eureka HTTP Client uses RestTemplate.
+2025-05-25 09:59:20.194 [restartedMain] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger - Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+2025-05-25 09:59:20.211 [restartedMain] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2025-05-25 09:59:20.263 [restartedMain] INFO  o.s.c.n.eureka.InstanceInfoFactory - Setting initial instance status as: STARTING
+2025-05-25 09:59:20.271 [restartedMain] INFO  c.netflix.discovery.DiscoveryClient - Initializing Eureka in region us-east-1
+2025-05-25 09:59:20.271 [restartedMain] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2025-05-25 09:59:20.272 [restartedMain] INFO  c.netflix.discovery.DiscoveryClient - Disable delta property : false
+2025-05-25 09:59:20.272 [restartedMain] INFO  c.netflix.discovery.DiscoveryClient - Single vip registry refresh property : null
+2025-05-25 09:59:20.272 [restartedMain] INFO  c.netflix.discovery.DiscoveryClient - Force full registry fetch : false
+2025-05-25 09:59:20.272 [restartedMain] INFO  c.netflix.discovery.DiscoveryClient - Application is null : false
+2025-05-25 09:59:20.272 [restartedMain] INFO  c.netflix.discovery.DiscoveryClient - Registered Applications size is zero : true
+2025-05-25 09:59:20.272 [restartedMain] INFO  c.netflix.discovery.DiscoveryClient - Application version is -1: true
+2025-05-25 09:59:20.272 [restartedMain] INFO  c.netflix.discovery.DiscoveryClient - Getting all instance registry info from the eureka server
+2025-05-25 09:59:20.365 [restartedMain] INFO  c.netflix.discovery.DiscoveryClient - The response status is 200
+2025-05-25 09:59:20.366 [restartedMain] INFO  c.netflix.discovery.DiscoveryClient - Starting heartbeat executor: renew interval is: 30
+2025-05-25 09:59:20.368 [restartedMain] INFO  c.n.discovery.InstanceInfoReplicator - InstanceInfoReplicator onDemand update allowed rate per min is 4
+2025-05-25 09:59:20.383 [restartedMain] INFO  c.netflix.discovery.DiscoveryClient - Discovery Client initialized at timestamp 1748147360383 with initial instances count: 1
+2025-05-25 09:59:20.395 [DiscoveryClient-InstanceInfoReplicator-%d] INFO  c.netflix.discovery.DiscoveryClient - Saw local status change event StatusChangeEvent [timestamp=1748147360395, current=UP, previous=STARTING]
+2025-05-25 09:59:20.396 [DiscoveryClient-InstanceInfoReplicator-%d] INFO  c.netflix.discovery.DiscoveryClient - DiscoveryClient_ORDER-SERVICE/LTIN593342.mshome.net:order-service:5001: registering service...
+2025-05-25 09:59:20.406 [restartedMain] INFO  o.s.c.n.e.s.EurekaServiceRegistry - Registering application ORDER-SERVICE with eureka with status UP
+2025-05-25 09:59:20.407 [restartedMain] WARN  c.n.discovery.InstanceInfoReplicator - Ignoring onDemand update due to rate limiter
+2025-05-25 09:59:20.409 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-5001"]
+2025-05-25 09:59:20.420 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 5001 (http) with context path '/'
+2025-05-25 09:59:20.421 [restartedMain] INFO  o.s.c.n.e.s.EurekaAutoServiceRegistration - Updating port to 5001
+2025-05-25 09:59:20.438 [DiscoveryClient-InstanceInfoReplicator-%d] INFO  c.netflix.discovery.DiscoveryClient - DiscoveryClient_ORDER-SERVICE/LTIN593342.mshome.net:order-service:5001 - registration status: 204
+2025-05-25 09:59:20.484 [restartedMain] INFO  c.c.i.order.OrderServiceApplication - Started OrderServiceApplication in 4.212 seconds (process running for 311.342)
+2025-05-25 09:59:20.499 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2025-05-25 09:59:58.644 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2025-05-25 09:59:58.647 [Thread-9] INFO  o.s.c.n.e.s.EurekaServiceRegistry - Unregistering application ORDER-SERVICE with eureka with status DOWN
+2025-05-25 09:59:58.648 [Thread-9] INFO  c.netflix.discovery.DiscoveryClient - Saw local status change event StatusChangeEvent [timestamp=1748147398648, current=DOWN, previous=UP]
+2025-05-25 09:59:58.650 [Thread-9] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-05-25 09:59:58.651 [tomcat-shutdown] INFO  o.a.coyote.http11.Http11NioProtocol - Pausing ProtocolHandler ["http-nio-5001"]
+2025-05-25 09:59:58.669 [DiscoveryClient-InstanceInfoReplicator-%d] INFO  c.netflix.discovery.DiscoveryClient - Saw local status change event StatusChangeEvent [timestamp=1748147398669, current=UP, previous=DOWN]
+2025-05-25 09:59:58.670 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-05-25 09:59:58.670 [DiscoveryClient-InstanceInfoReplicator-%d] INFO  c.netflix.discovery.DiscoveryClient - DiscoveryClient_ORDER-SERVICE/LTIN593342.mshome.net:order-service:5001: registering service...
+2025-05-25 09:59:58.671 [Thread-9] INFO  o.a.coyote.http11.Http11NioProtocol - Stopping ProtocolHandler ["http-nio-5001"]
+2025-05-25 09:59:58.678 [Thread-9] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-05-25 09:59:58.680 [Thread-9] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Shutdown initiated...
+2025-05-25 09:59:58.685 [DiscoveryClient-InstanceInfoReplicator-%d] INFO  c.netflix.discovery.DiscoveryClient - DiscoveryClient_ORDER-SERVICE/LTIN593342.mshome.net:order-service:5001 - registration status: 204
+2025-05-25 09:59:58.699 [Thread-9] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Shutdown completed.
+2025-05-25 09:59:58.701 [Thread-9] INFO  c.netflix.discovery.DiscoveryClient - Shutting down DiscoveryClient ...
+2025-05-25 10:00:01.702 [Thread-9] INFO  c.netflix.discovery.DiscoveryClient - Unregistering ...
+2025-05-25 10:00:01.712 [Thread-9] INFO  c.netflix.discovery.DiscoveryClient - DiscoveryClient_ORDER-SERVICE/LTIN593342.mshome.net:order-service:5001 - deregister  status: 200
+2025-05-25 10:00:01.713 [Thread-9] INFO  c.netflix.discovery.DiscoveryClient - Completed shut down of DiscoveryClient
+2025-05-25 10:00:02.026 [restartedMain] INFO  c.c.i.order.OrderServiceApplication - Starting OrderServiceApplication using Java 21 with PID 4100 (C:\Users\2392789\OneDrive - Cognizant\Desktop\PPRROOJJEECCTT\order-service\target\classes started by 2392789 in C:\Users\2392789\OneDrive - Cognizant\Desktop\PPRROOJJEECCTT\order-service)
+2025-05-25 10:00:02.027 [restartedMain] DEBUG c.c.i.order.OrderServiceApplication - Running with Spring Boot v3.4.5, Spring v6.2.6
+2025-05-25 10:00:02.027 [restartedMain] INFO  c.c.i.order.OrderServiceApplication - No active profile set, falling back to 1 default profile: "default"
+2025-05-25 10:00:02.757 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-25 10:00:02.782 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 23 ms. Found 1 JPA repository interface.
+2025-05-25 10:00:02.879 [restartedMain] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=96b8c958-a9ca-3b3e-b88c-6fc3b79f7ff5
+2025-05-25 10:00:03.040 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 5001 (http)
+2025-05-25 10:00:03.041 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-5001"]
+2025-05-25 10:00:03.041 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-05-25 10:00:03.041 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.40]
+2025-05-25 10:00:03.096 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-05-25 10:00:03.096 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1062 ms
+2025-05-25 10:00:03.302 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-25 10:00:03.307 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-05-25 10:00:03.322 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-25 10:00:03.323 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Starting...
+2025-05-25 10:00:03.345 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-3 - Added connection com.mysql.cj.jdbc.ConnectionImpl@5c411801
+2025-05-25 10:00:03.345 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Start completed.
+2025-05-25 10:00:03.348 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-05-25 10:00:03.348 [restartedMain] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-3)']
+	Database driver: undefined/unknown
+	Database version: 8.0.41
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-05-25 10:00:03.511 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-25 10:00:03.534 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-25 10:00:03.789 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-05-25 10:00:03.848 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-05-25 10:00:03.890 [restartedMain] INFO  o.s.c.o.FeignClientFactoryBean - For 'product-service' URL not provided. Will try picking an instance via load-balancing.
+2025-05-25 10:00:03.935 [restartedMain] INFO  o.s.c.o.FeignClientFactoryBean - For 'stock-service' URL not provided. Will try picking an instance via load-balancing.
+2025-05-25 10:00:04.605 [restartedMain] INFO  o.s.c.n.e.c.DiscoveryClientOptionalArgsConfiguration - Eureka HTTP Client uses RestTemplate.
+2025-05-25 10:00:04.643 [restartedMain] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger - Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+2025-05-25 10:00:04.665 [restartedMain] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2025-05-25 10:00:04.717 [restartedMain] INFO  o.s.c.n.eureka.InstanceInfoFactory - Setting initial instance status as: STARTING
+2025-05-25 10:00:04.721 [restartedMain] INFO  c.netflix.discovery.DiscoveryClient - Initializing Eureka in region us-east-1
+2025-05-25 10:00:04.721 [restartedMain] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2025-05-25 10:00:04.722 [restartedMain] INFO  c.netflix.discovery.DiscoveryClient - Disable delta property : false
+2025-05-25 10:00:04.722 [restartedMain] INFO  c.netflix.discovery.DiscoveryClient - Single vip registry refresh property : null
+2025-05-25 10:00:04.722 [restartedMain] INFO  c.netflix.discovery.DiscoveryClient - Force full registry fetch : false
+2025-05-25 10:00:04.722 [restartedMain] INFO  c.netflix.discovery.DiscoveryClient - Application is null : false
+2025-05-25 10:00:04.722 [restartedMain] INFO  c.netflix.discovery.DiscoveryClient - Registered Applications size is zero : true
+2025-05-25 10:00:04.722 [restartedMain] INFO  c.netflix.discovery.DiscoveryClient - Application version is -1: true
+2025-05-25 10:00:04.722 [restartedMain] INFO  c.netflix.discovery.DiscoveryClient - Getting all instance registry info from the eureka server
+2025-05-25 10:00:04.769 [restartedMain] INFO  c.netflix.discovery.DiscoveryClient - The response status is 200
+2025-05-25 10:00:04.770 [restartedMain] INFO  c.netflix.discovery.DiscoveryClient - Starting heartbeat executor: renew interval is: 30
+2025-05-25 10:00:04.770 [restartedMain] INFO  c.n.discovery.InstanceInfoReplicator - InstanceInfoReplicator onDemand update allowed rate per min is 4
+2025-05-25 10:00:04.771 [restartedMain] INFO  c.netflix.discovery.DiscoveryClient - Discovery Client initialized at timestamp 1748147404771 with initial instances count: 1
+2025-05-25 10:00:04.777 [DiscoveryClient-InstanceInfoReplicator-%d] INFO  c.netflix.discovery.DiscoveryClient - Saw local status change event StatusChangeEvent [timestamp=1748147404777, current=UP, previous=STARTING]
+2025-05-25 10:00:04.778 [DiscoveryClient-InstanceInfoReplicator-%d] INFO  c.netflix.discovery.DiscoveryClient - DiscoveryClient_ORDER-SERVICE/LTIN593342.mshome.net:order-service:5001: registering service...
+2025-05-25 10:00:04.778 [restartedMain] INFO  o.s.c.n.e.s.EurekaServiceRegistry - Registering application ORDER-SERVICE with eureka with status UP
+2025-05-25 10:00:04.779 [restartedMain] WARN  c.n.discovery.InstanceInfoReplicator - Ignoring onDemand update due to rate limiter
+2025-05-25 10:00:04.780 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-5001"]
+2025-05-25 10:00:04.790 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 5001 (http) with context path '/'
+2025-05-25 10:00:04.791 [restartedMain] INFO  o.s.c.n.e.s.EurekaAutoServiceRegistration - Updating port to 5001
+2025-05-25 10:00:04.810 [DiscoveryClient-InstanceInfoReplicator-%d] INFO  c.netflix.discovery.DiscoveryClient - DiscoveryClient_ORDER-SERVICE/LTIN593342.mshome.net:order-service:5001 - registration status: 204
+2025-05-25 10:00:04.830 [restartedMain] INFO  c.c.i.order.OrderServiceApplication - Started OrderServiceApplication in 2.933 seconds (process running for 355.688)
+2025-05-25 10:00:04.833 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2025-05-25 10:01:45.193 [File Watcher] INFO  o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2025-05-25 10:01:45.195 [Thread-15] INFO  o.s.c.n.e.s.EurekaServiceRegistry - Unregistering application ORDER-SERVICE with eureka with status DOWN
+2025-05-25 10:01:45.195 [Thread-15] INFO  c.netflix.discovery.DiscoveryClient - Saw local status change event StatusChangeEvent [timestamp=1748147505195, current=DOWN, previous=UP]
+2025-05-25 10:01:45.197 [Thread-15] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-05-25 10:01:45.198 [tomcat-shutdown] INFO  o.a.coyote.http11.Http11NioProtocol - Pausing ProtocolHandler ["http-nio-5001"]
+2025-05-25 10:01:45.202 [DiscoveryClient-InstanceInfoReplicator-%d] INFO  c.netflix.discovery.DiscoveryClient - Saw local status change event StatusChangeEvent [timestamp=1748147505202, current=UP, previous=DOWN]
+2025-05-25 10:01:45.203 [DiscoveryClient-InstanceInfoReplicator-%d] INFO  c.netflix.discovery.DiscoveryClient - DiscoveryClient_ORDER-SERVICE/LTIN593342.mshome.net:order-service:5001: registering service...
+2025-05-25 10:01:45.211 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-05-25 10:01:45.212 [Thread-15] INFO  o.a.coyote.http11.Http11NioProtocol - Stopping ProtocolHandler ["http-nio-5001"]
+2025-05-25 10:01:45.216 [DiscoveryClient-InstanceInfoReplicator-%d] INFO  c.netflix.discovery.DiscoveryClient - DiscoveryClient_ORDER-SERVICE/LTIN593342.mshome.net:order-service:5001 - registration status: 204
+2025-05-25 10:01:45.221 [Thread-15] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-05-25 10:01:45.222 [Thread-15] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Shutdown initiated...
+2025-05-25 10:01:45.232 [Thread-15] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Shutdown completed.
+2025-05-25 10:01:45.233 [Thread-15] INFO  c.netflix.discovery.DiscoveryClient - Shutting down DiscoveryClient ...
+2025-05-25 10:01:48.240 [Thread-15] INFO  c.netflix.discovery.DiscoveryClient - Unregistering ...
+2025-05-25 10:01:48.263 [Thread-15] INFO  c.netflix.discovery.DiscoveryClient - DiscoveryClient_ORDER-SERVICE/LTIN593342.mshome.net:order-service:5001 - deregister  status: 200
+2025-05-25 10:01:48.263 [Thread-15] INFO  c.netflix.discovery.DiscoveryClient - Completed shut down of DiscoveryClient
+2025-05-25 10:01:48.452 [restartedMain] INFO  c.c.i.order.OrderServiceApplication - Starting OrderServiceApplication using Java 21 with PID 4100 (C:\Users\2392789\OneDrive - Cognizant\Desktop\PPRROOJJEECCTT\order-service\target\classes started by 2392789 in C:\Users\2392789\OneDrive - Cognizant\Desktop\PPRROOJJEECCTT\order-service)
+2025-05-25 10:01:48.452 [restartedMain] DEBUG c.c.i.order.OrderServiceApplication - Running with Spring Boot v3.4.5, Spring v6.2.6
+2025-05-25 10:01:48.453 [restartedMain] INFO  c.c.i.order.OrderServiceApplication - No active profile set, falling back to 1 default profile: "default"
+2025-05-25 10:01:49.001 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-05-25 10:01:49.025 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 22 ms. Found 1 JPA repository interface.
+2025-05-25 10:01:49.105 [restartedMain] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=96b8c958-a9ca-3b3e-b88c-6fc3b79f7ff5
+2025-05-25 10:01:49.244 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 5001 (http)
+2025-05-25 10:01:49.245 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-5001"]
+2025-05-25 10:01:49.245 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-05-25 10:01:49.245 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.40]
+2025-05-25 10:01:49.294 [restartedMain] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-05-25 10:01:49.294 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 838 ms
+2025-05-25 10:01:49.454 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-05-25 10:01:49.458 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-05-25 10:01:49.469 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-05-25 10:01:49.470 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-4 - Starting...
+2025-05-25 10:01:49.488 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-4 - Added connection com.mysql.cj.jdbc.ConnectionImpl@22b5c16c
+2025-05-25 10:01:49.488 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-4 - Start completed.
+2025-05-25 10:01:49.490 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-05-25 10:01:49.490 [restartedMain] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-4)']
+	Database driver: undefined/unknown
+	Database version: 8.0.41
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-05-25 10:01:49.588 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-05-25 10:01:49.616 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-05-25 10:01:49.935 [restartedMain] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-05-25 10:01:49.994 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-05-25 10:01:50.034 [restartedMain] INFO  o.s.c.o.FeignClientFactoryBean - For 'product-service' URL not provided. Will try picking an instance via load-balancing.
+2025-05-25 10:01:50.078 [restartedMain] INFO  o.s.c.o.FeignClientFactoryBean - For 'stock-service' URL not provided. Will try picking an instance via load-balancing.
+2025-05-25 10:01:51.011 [restartedMain] INFO  o.s.c.n.e.c.DiscoveryClientOptionalArgsConfiguration - Eureka HTTP Client uses RestTemplate.
+2025-05-25 10:01:51.042 [restartedMain] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger - Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+2025-05-25 10:01:51.053 [restartedMain] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2025-05-25 10:01:51.092 [restartedMain] INFO  o.s.c.n.eureka.InstanceInfoFactory - Setting initial instance status as: STARTING
+2025-05-25 10:01:51.096 [restartedMain] INFO  c.netflix.discovery.DiscoveryClient - Initializing Eureka in region us-east-1
+2025-05-25 10:01:51.096 [restartedMain] INFO  c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2025-05-25 10:01:51.097 [restartedMain] INFO  c.netflix.discovery.DiscoveryClient - Disable delta property : false
+2025-05-25 10:01:51.097 [restartedMain] INFO  c.netflix.discovery.DiscoveryClient - Single vip registry refresh property : null
+2025-05-25 10:01:51.097 [restartedMain] INFO  c.netflix.discovery.DiscoveryClient - Force full registry fetch : false
+2025-05-25 10:01:51.097 [restartedMain] INFO  c.netflix.discovery.DiscoveryClient - Application is null : false
+2025-05-25 10:01:51.097 [restartedMain] INFO  c.netflix.discovery.DiscoveryClient - Registered Applications size is zero : true
+2025-05-25 10:01:51.097 [restartedMain] INFO  c.netflix.discovery.DiscoveryClient - Application version is -1: true
+2025-05-25 10:01:51.097 [restartedMain] INFO  c.netflix.discovery.DiscoveryClient - Getting all instance registry info from the eureka server
+2025-05-25 10:01:51.136 [restartedMain] INFO  c.netflix.discovery.DiscoveryClient - The response status is 200
+2025-05-25 10:01:51.136 [restartedMain] INFO  c.netflix.discovery.DiscoveryClient - Starting heartbeat executor: renew interval is: 30
+2025-05-25 10:01:51.137 [restartedMain] INFO  c.n.discovery.InstanceInfoReplicator - InstanceInfoReplicator onDemand update allowed rate per min is 4
+2025-05-25 10:01:51.137 [restartedMain] INFO  c.netflix.discovery.DiscoveryClient - Discovery Client initialized at timestamp 1748147511137 with initial instances count: 1
+2025-05-25 10:01:51.142 [DiscoveryClient-InstanceInfoReplicator-%d] INFO  c.netflix.discovery.DiscoveryClient - Saw local status change event StatusChangeEvent [timestamp=1748147511142, current=UP, previous=STARTING]
+2025-05-25 10:01:51.142 [DiscoveryClient-InstanceInfoReplicator-%d] INFO  c.netflix.discovery.DiscoveryClient - DiscoveryClient_ORDER-SERVICE/LTIN593342.mshome.net:order-service:5001: registering service...
+2025-05-25 10:01:51.144 [restartedMain] INFO  o.s.c.n.e.s.EurekaServiceRegistry - Registering application ORDER-SERVICE with eureka with status UP
+2025-05-25 10:01:51.145 [restartedMain] WARN  c.n.discovery.InstanceInfoReplicator - Ignoring onDemand update due to rate limiter
+2025-05-25 10:01:51.145 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-5001"]
+2025-05-25 10:01:51.151 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 5001 (http) with context path '/'
+2025-05-25 10:01:51.152 [restartedMain] INFO  o.s.c.n.e.s.EurekaAutoServiceRegistration - Updating port to 5001
+2025-05-25 10:01:51.168 [DiscoveryClient-InstanceInfoReplicator-%d] INFO  c.netflix.discovery.DiscoveryClient - DiscoveryClient_ORDER-SERVICE/LTIN593342.mshome.net:order-service:5001 - registration status: 204
+2025-05-25 10:01:51.191 [restartedMain] INFO  c.c.i.order.OrderServiceApplication - Started OrderServiceApplication in 2.786 seconds (process running for 462.049)
+2025-05-25 10:01:51.196 [restartedMain] INFO  o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
