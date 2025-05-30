@@ -2,7 +2,7 @@
 
 ## Overview
 
-The `stock-service` is a crucial microservice within the Inventory Management System, responsible for managing the inventory levels of products. It allows for tracking the quantity of each product in stock, updating stock levels upon order placement or receipt of goods, and managing reorder levels to prevent stockouts. This service interacts with a database to persist stock information and provides REST API endpoints for other services (primarily the `product-service` and `order-service`) to access and manage stock data. It also communicates with the `product-service` to retrieve product details.
+The `stock-service` is a crucial microservice within the Inventory Management System, responsible for managing the inventory levels of products. It allows for tracking the quantity of each product in stock, updating stock levels upon order placement, and managing reorder levels to prevent stockouts. This service interacts with a database to persist stock information and provides REST API endpoints for other services (primarily the `product-service` and `order-service`) to access and manage stock data. It also communicates with the `product-service` to retrieve product details.
 
 ## Technologies Used
 
