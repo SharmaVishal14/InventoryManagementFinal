@@ -12,7 +12,7 @@ The `supplier-service` is a core microservice within the Inventory Management Sy
 * 💾 **Spring Data JPA:** For database interaction through the `SupplierRepository`.
 * 💡 **Lombok:** For reducing boilerplate code in Java classes.
 * ⚙️ **MySQL:** Relational database used for persisting supplier information (configured in `application.properties`).
-* <0xF0><0x9F><0xAA><0x9E> **Maven:** Build automation tool (configured in `pom.xml`, if provided).
+* **Maven:** Build automation tool (configured in `pom.xml`, if provided).
 * 🪵 **Logback:** Logging framework (standard Spring Boot setup, often configured via `logback.xml`).
 * 📄 **SpringDoc OpenAPI:** For generating and serving Swagger API documentation.
 * 📡 **Eureka Client:** For service registration and discovery within the microservices architecture.
